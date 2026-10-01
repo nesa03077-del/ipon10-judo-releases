@@ -1,0 +1,22 @@
+# Kad se gurne tag v* (npr. v1.1.2), objavljuje GitHub Release sa APK-om iz foldera apk/.
+# Aplikacija Ipon 10 Judo (Podešavanja -> Proveri ažuriranja) čita poslednje izdanje odavde.
+name: Objavi izdanje
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: softprops/action-gh-release@v2
+        with:
+          name: Ipon 10 Judo ${{ github.ref_name }}
+          files: apk/Ipon10Judo-${{ github.ref_name }}.apk
+          body_path: notes/${{ github.ref_name }}.md
+          make_latest: true
